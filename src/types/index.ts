@@ -2,6 +2,8 @@ export interface Store {
   id: string;
   name: string;
   order: number;
+  city: string;
+  state: string;
 }
 
 export interface SKU {
@@ -9,6 +11,8 @@ export interface SKU {
   name: string;
   price: number;
   cost: number;
+  class: string;
+  department: string;
 }
 
 export interface PlanningData {
