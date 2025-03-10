@@ -7,22 +7,28 @@ import { RootState } from '../store';
 export const StoresPage: React.FC = () => {
   const dispatch = useDispatch();
   const stores = useSelector((state: RootState) => state.app.stores);
-  const [newStoreName, setNewStoreName] = useState('');
+  const [newStore, setNewStore] = useState({
+    name: '',
+    city: '',
+    state: '',
+  });
 
   const handleAddStore = () => {
-    if (newStoreName.trim()) {
-      const newStore: Store = {
+    if (newStore.name.trim()) {
+      const store: Store = {
         id: crypto.randomUUID(),
-        name: newStoreName.trim(),
+        name: newStore.name.trim(),
+        city: newStore.city.trim(),
+        state: newStore.state.trim(),
         order: stores.length,
       };
-      dispatch(addStore(newStore));
-      setNewStoreName('');
+      dispatch(addStore(store));
+      setNewStore({ name: '', city: '', state: '' });
     }
   };
 
-  const handleUpdateStore = (store: Store, newName: string) => {
-    dispatch(updateStore({ ...store, name: newName }));
+  const handleUpdateStore = (store: Store, field: keyof Store, value: string) => {
+    dispatch(updateStore({ ...store, [field]: value }));
   };
 
   const handleRemoveStore = (storeId: string) => {
@@ -41,7 +47,6 @@ export const StoresPage: React.FC = () => {
         newStores[swapIndex],
         newStores[storeIndex],
       ];
-      // Update order values
       newStores.forEach((store, index) => {
         dispatch(updateStore({ ...store, order: index }));
       });
@@ -55,9 +60,23 @@ export const StoresPage: React.FC = () => {
         <div className="flex gap-2">
           <input
             type="text"
-            value={newStoreName}
-            onChange={(e) => setNewStoreName(e.target.value)}
-            placeholder="Enter store name"
+            value={newStore.name}
+            onChange={(e) => setNewStore({ ...newStore, name: e.target.value })}
+            placeholder="Store name"
+            className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="text"
+            value={newStore.city}
+            onChange={(e) => setNewStore({ ...newStore, city: e.target.value })}
+            placeholder="City"
+            className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="text"
+            value={newStore.state}
+            onChange={(e) => setNewStore({ ...newStore, state: e.target.value })}
+            placeholder="State"
             className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
@@ -77,7 +96,16 @@ export const StoresPage: React.FC = () => {
                 Order
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Store ID
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Store Name
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                City
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                State
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
@@ -106,11 +134,30 @@ export const StoresPage: React.FC = () => {
                     <span>{store.order + 1}</span>
                   </div>
                 </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {store.id}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <input
                     type="text"
                     value={store.name}
-                    onChange={(e) => handleUpdateStore(store, e.target.value)}
+                    onChange={(e) => handleUpdateStore(store, 'name', e.target.value)}
+                    className="w-full px-2 py-1 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <input
+                    type="text"
+                    value={store.city}
+                    onChange={(e) => handleUpdateStore(store, 'city', e.target.value)}
+                    className="w-full px-2 py-1 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <input
+                    type="text"
+                    value={store.state}
+                    onChange={(e) => handleUpdateStore(store, 'state', e.target.value)}
                     className="w-full px-2 py-1 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </td>
