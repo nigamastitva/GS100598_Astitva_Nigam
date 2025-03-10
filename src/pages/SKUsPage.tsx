@@ -11,6 +11,8 @@ export const SKUsPage: React.FC = () => {
     name: '',
     price: 0,
     cost: 0,
+    class: '',
+    department: '',
   });
 
   const handleAddSKU = () => {
@@ -20,9 +22,11 @@ export const SKUsPage: React.FC = () => {
         name: newSKU.name.trim(),
         price: Number(newSKU.price),
         cost: Number(newSKU.cost),
+        class: newSKU.class.trim(),
+        department: newSKU.department.trim(),
       };
       dispatch(addSKU(sku));
-      setNewSKU({ name: '', price: 0, cost: 0 });
+      setNewSKU({ name: '', price: 0, cost: 0, class: '', department: '' });
     }
   };
 
@@ -41,19 +45,29 @@ export const SKUsPage: React.FC = () => {
           <input
             type="number"
             value={newSKU.price}
-            onChange={(e) =>
-              setNewSKU({ ...newSKU, price: parseFloat(e.target.value) })
-            }
+            onChange={(e) => setNewSKU({ ...newSKU, price: parseFloat(e.target.value) })}
             placeholder="Price"
             className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             type="number"
             value={newSKU.cost}
-            onChange={(e) =>
-              setNewSKU({ ...newSKU, cost: parseFloat(e.target.value) })
-            }
+            onChange={(e) => setNewSKU({ ...newSKU, cost: parseFloat(e.target.value) })}
             placeholder="Cost"
+            className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="text"
+            value={newSKU.class}
+            onChange={(e) => setNewSKU({ ...newSKU, class: e.target.value })}
+            placeholder="Class"
+            className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="text"
+            value={newSKU.department}
+            onChange={(e) => setNewSKU({ ...newSKU, department: e.target.value })}
+            placeholder="Department"
             className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
@@ -70,13 +84,22 @@ export const SKUsPage: React.FC = () => {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                SKU ID
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 SKU Name
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Price
+                Price $
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Cost
+                Cost $
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Class
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Department
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
@@ -86,13 +109,14 @@ export const SKUsPage: React.FC = () => {
           <tbody className="bg-white divide-y divide-gray-200">
             {skus.map((sku) => (
               <tr key={sku.id}>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {sku.id}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <input
                     type="text"
                     value={sku.name}
-                    onChange={(e) =>
-                      dispatch(updateSKU({ ...sku, name: e.target.value }))
-                    }
+                    onChange={(e) => dispatch(updateSKU({ ...sku, name: e.target.value }))}
                     className="w-full px-2 py-1 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </td>
@@ -100,9 +124,7 @@ export const SKUsPage: React.FC = () => {
                   <input
                     type="number"
                     value={sku.price}
-                    onChange={(e) =>
-                      dispatch(updateSKU({ ...sku, price: parseFloat(e.target.value) }))
-                    }
+                    onChange={(e) => dispatch(updateSKU({ ...sku, price: parseFloat(e.target.value) }))}
                     className="w-full px-2 py-1 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </td>
@@ -110,9 +132,23 @@ export const SKUsPage: React.FC = () => {
                   <input
                     type="number"
                     value={sku.cost}
-                    onChange={(e) =>
-                      dispatch(updateSKU({ ...sku, cost: parseFloat(e.target.value) }))
-                    }
+                    onChange={(e) => dispatch(updateSKU({ ...sku, cost: parseFloat(e.target.value) }))}
+                    className="w-full px-2 py-1 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <input
+                    type="text"
+                    value={sku.class}
+                    onChange={(e) => dispatch(updateSKU({ ...sku, class: e.target.value }))}
+                    className="w-full px-2 py-1 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <input
+                    type="text"
+                    value={sku.department}
+                    onChange={(e) => dispatch(updateSKU({ ...sku, department: e.target.value }))}
                     className="w-full px-2 py-1 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </td>
